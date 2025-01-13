@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const locales = {
   'en': require('date-fns/locale/en-US'),
   'es': require('date-fns/locale/es')
@@ -86,7 +86,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         username,
         password,
       });
@@ -98,7 +98,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      axios.get('http://localhost:5000/api/events')
+      axios.get(`${API_URL}/api/events`)
         .then((response) => {
           const validEvents = response.data.map(event => {
             const startDate = new Date(event.start);
@@ -136,7 +136,7 @@ function App() {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/events', {
+      await axios.post(`${API_URL}/api/events`, {
         title: newEvent.title,
         start: startDate,
         end: endDate,
