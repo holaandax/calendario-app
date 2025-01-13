@@ -32,6 +32,16 @@ app.use('/api/events', eventRoutes);
 // Definir un puerto para el servidor
 const PORT = process.env.PORT || 5000;
 
+const path = require('path');
+
+// Servir los archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+// Manejar rutas no coincidentes y servir el index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
